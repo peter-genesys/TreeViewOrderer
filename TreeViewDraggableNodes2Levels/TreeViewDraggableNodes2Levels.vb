@@ -137,12 +137,13 @@ Public Class TreeViewDraggableNodes2Levels
                 If IsNodeLevel1(dragNode) Then
                     dragNode.Remove()
                     If MyBase.SelectedNode IsNot Nothing Then
-                        MyBase.Nodes.Insert(MyBase.SelectedNode.Index + 1, dragNode) 'Move Dragged Level1 node, to be sibling below Selected Level1 node
+                        MyBase.Nodes.Insert(MyBase.SelectedNode.Index, dragNode) 'Move Dragged Level1 node, to be sibling above Selected Level1 node
                     Else
                         MyBase.Nodes.Add(dragNode) 'Move Dragged Level1 node to last Level1 posn
 
                     End If
                     OnNodeMovedByDrag(New NodeMovedByDragEventArgs(dragNode, prevParent))
+                    MyBase.SelectedNode = dragNode
 
                 Else
                     If MyBase.SelectedNode Is Nothing Then
@@ -155,10 +156,11 @@ Public Class TreeViewDraggableNodes2Levels
                             'Dragging level2 to a new parent level1 node
                             MyBase.SelectedNode.Nodes.Add(dragNode)
                         Else
-                            'Dragging level2 to a new sibling level2 node
-                            MyBase.SelectedNode.Parent.Nodes.Insert(MyBase.SelectedNode.Index + 1, dragNode)
+                            'Dragging level2 to be sibling above Selected Level2 node  
+                            MyBase.SelectedNode.Parent.Nodes.Insert(MyBase.SelectedNode.Index, dragNode)
                         End If
                         OnNodeMovedByDrag(New NodeMovedByDragEventArgs(dragNode, prevParent))
+                        MyBase.SelectedNode = dragNode
                     End If
   
 
