@@ -234,6 +234,119 @@ Public Class TreeViewDraggableNodes2Levels
 
     End Sub
 
+    Public Sub RemoveChildlessLevel1Nodes()
+        Dim node As TreeNode
+        For i As Integer = MyBase.Nodes.Count - 1 To 0 Step -1
+            node = MyBase.Nodes(i)
+
+            If node.Nodes.Count = 0 Then
+                MyBase.Nodes.Remove(node)
+            End If
+        Next
+
+    End Sub
+
+    Public Shared Sub ReadTags(ByRef givenNodes As TreeNodeCollection, ByRef iChosenPatches As Collection, ByVal listAllRoots As Boolean, ByVal listNoRoots As Boolean, ByVal listTags As Boolean, ByVal checkedItemsOnly As Boolean)
+        'This routine assumes usage of a 2level control like TreeViewDraggableNodes2Levels
+        Dim node As TreeNode
+        For Each node In givenNodes
+            If node.Parent Is Nothing Then
+                'Level1
+                If (node.Nodes.Count > 0 Or listAllRoots) And Not listNoRoots Then
+                    If listTags Then
+                        iChosenPatches.Add(node.Tag, node.Tag.ToString)
+                    Else
+                        iChosenPatches.Add(node.Text, node.Text)
+                    End If
+                End If
+                ReadTags(node.Nodes, iChosenPatches, listAllRoots, listNoRoots, listTags, checkedItemsOnly)
+
+            Else
+                'Level2
+                If node.Checked Or Not checkedItemsOnly Then
+                    If listTags Then
+                        iChosenPatches.Add(node.Tag, node.Tag.ToString)
+                    Else
+                        iChosenPatches.Add(node.Text, node.Text)
+                    End If
+                End If
+            End If
+
+
+        Next node
+
+
+    End Sub
+
+
+    Public Sub ReadTags(ByRef iChosenPatches As Collection, ByVal listAllRoots As Boolean, ByVal listNoRoots As Boolean, ByVal listTags As Boolean, ByVal checkedItemsOnly As Boolean)
+
+        ReadTags(MyBase.Nodes, iChosenPatches, listAllRoots, listNoRoots, listTags, checkedItemsOnly)
+
+    End Sub
+
+
+ 
+    'A Category is a root node, with formatting
+    Public Function AddCategory(ByVal label As String) As Boolean
+
+        Dim newNode As TreeNode = New TreeNode(label)
+        newNode.Tag = label
+        newNode.BackColor = Color.Aqua
+
+        MyBase.Nodes.Add(newNode)
+
+        Return True
+
+    End Function
+
+    'A Category is a root node, with formatting
+    Public Function PrependCategory(ByVal label As String) As Boolean
+
+        Dim newNode As TreeNode = New TreeNode(label)
+        newNode.Tag = label
+        newNode.BackColor = Color.Aqua
+        MyBase.Nodes.Insert(0, newNode) 'Add node at start of nodes list.
+
+        Return True
+
+    End Function
+
+
+    Public Function AddFileToCategory(ByVal category As String, ByVal label As String, ByVal path As String) As Boolean
+
+        Dim newNode As TreeNode = New TreeNode(label)
+        newNode.Tag = path
+
+        Dim node As TreeNode
+        For Each node In MyBase.Nodes
+            If node.Text = category Then
+                node.Nodes.Add(newNode)
+            End If
+        Next
+
+
+        Return True
+
+
+    End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 End Class
