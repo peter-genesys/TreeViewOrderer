@@ -284,14 +284,28 @@ Public Class TreeViewDraggableNodes2Levels
         ReadTags(MyBase.Nodes, iChosenPatches, listAllRoots, listNoRoots, listTags, checkedItemsOnly)
 
     End Sub
+    Public Function CategoryExists(ByVal category As String) As Boolean
+        Dim node As TreeNode
+        For Each node In MyBase.Nodes
+            If node.Text = category Then
+                Return True
+            End If
+        Next
+        Return False
+
+    End Function
 
 
- 
+
+
     'A Category is a root node, with formatting
-    Public Function AddCategory(ByVal label As String) As Boolean
-
-        Dim newNode As TreeNode = New TreeNode(label)
-        newNode.Tag = label
+    Public Function AddCategory(ByVal category As String) As Boolean
+        If CategoryExists(category) Then
+            Return True
+        End If
+ 
+        Dim newNode As TreeNode = New TreeNode(category)
+        newNode.Tag = category
         newNode.BackColor = Color.Aqua
 
         MyBase.Nodes.Add(newNode)
@@ -301,10 +315,15 @@ Public Class TreeViewDraggableNodes2Levels
     End Function
 
     'A Category is a root node, with formatting
-    Public Function PrependCategory(ByVal label As String) As Boolean
+    Public Function PrependCategory(ByVal category As String) As Boolean
 
-        Dim newNode As TreeNode = New TreeNode(label)
-        newNode.Tag = label
+        If CategoryExists(category) Then
+            Return True
+        End If
+
+
+        Dim newNode As TreeNode = New TreeNode(category)
+        newNode.Tag = category
         newNode.BackColor = Color.Aqua
         MyBase.Nodes.Insert(0, newNode) 'Add node at start of nodes list.
 
