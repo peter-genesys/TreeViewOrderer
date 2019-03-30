@@ -332,10 +332,11 @@ Public Class TreeViewDraggableNodes2Levels
     End Function
 
 
-    Public Function AddFileToCategory(ByVal category As String, ByVal label As String, ByVal path As String) As Boolean
+    Public Function AddFileToCategory(ByVal category As String, ByVal label As String, ByVal path As String, Optional nodeChecked As Boolean = False) As Boolean
 
         Dim newNode As TreeNode = New TreeNode(label)
         newNode.Tag = path
+        newNode.Checked = nodeChecked
 
         Dim node As TreeNode
         For Each node In MyBase.Nodes
