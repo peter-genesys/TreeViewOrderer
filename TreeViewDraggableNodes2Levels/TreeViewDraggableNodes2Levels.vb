@@ -1,5 +1,5 @@
 ﻿
-Option Strict On
+'Option Strict On
 
 Imports System.Windows.Forms
 
@@ -246,7 +246,14 @@ Public Class TreeViewDraggableNodes2Levels
 
     End Sub
 
-    Public Shared Sub ReadTags(ByRef givenNodes As TreeNodeCollection, ByRef iChosenPatches As Collection, ByVal listAllRoots As Boolean, ByVal listNoRoots As Boolean, ByVal listTags As Boolean, ByVal checkedItemsOnly As Boolean)
+    Public Sub ReadTags(ByRef givenNodes As TreeNodeCollection,
+                               ByRef iChosenPatches As Collection,
+                               ByVal listAllRoots As Boolean,
+                               ByVal listNoRoots As Boolean,
+                               ByVal listTags As Boolean,
+                               ByVal checkedItemsOnly As Boolean,
+                      Optional ByVal listFullPath As Boolean = False,
+                      Optional ByVal rootNode As String = "")
         'This routine assumes usage of a 2level control like TreeViewDraggableNodes2Levels
         Dim node As TreeNode
         For Each node In givenNodes
@@ -259,15 +266,20 @@ Public Class TreeViewDraggableNodes2Levels
                         iChosenPatches.Add(node.Text, node.Text)
                     End If
                 End If
-                ReadTags(node.Nodes, iChosenPatches, listAllRoots, listNoRoots, listTags, checkedItemsOnly)
+                If listFullPath Then
+                    ReadTags(node.Nodes, iChosenPatches, listAllRoots, listNoRoots, listTags, checkedItemsOnly, listFullPath, If(listTags, node.Tag.ToString, node.Text) & MyBase.PathSeparator)
+                Else
+                    ReadTags(node.Nodes, iChosenPatches, listAllRoots, listNoRoots, listTags, checkedItemsOnly)
+                End If
+
 
             Else
                 'Level2
                 If node.Checked Or Not checkedItemsOnly Then
                     If listTags Then
-                        iChosenPatches.Add(node.Tag, node.Tag.ToString)
+                        iChosenPatches.Add(rootNode & node.Tag, rootNode & node.Tag.ToString)
                     Else
-                        iChosenPatches.Add(node.Text, node.Text)
+                        iChosenPatches.Add(rootNode & node.Text, rootNode & node.Text)
                     End If
                 End If
             End If
@@ -279,9 +291,15 @@ Public Class TreeViewDraggableNodes2Levels
     End Sub
 
 
-    Public Sub ReadTags(ByRef iChosenPatches As Collection, ByVal listAllRoots As Boolean, ByVal listNoRoots As Boolean, ByVal listTags As Boolean, ByVal checkedItemsOnly As Boolean)
+    Public Sub ReadTags(ByRef iChosenPatches As Collection,
+                        ByVal listAllRoots As Boolean,
+                        ByVal listNoRoots As Boolean,
+                        ByVal listTags As Boolean,
+                        ByVal checkedItemsOnly As Boolean,
+               Optional ByVal listFullPath As Boolean = False,
+               Optional ByVal rootNode As String = "")
 
-        ReadTags(MyBase.Nodes, iChosenPatches, listAllRoots, listNoRoots, listTags, checkedItemsOnly)
+        ReadTags(MyBase.Nodes, iChosenPatches, listAllRoots, listNoRoots, listTags, checkedItemsOnly, listFullPath, rootNode)
 
     End Sub
     Public Function CategoryExists(ByVal category As String) As Boolean
@@ -338,35 +356,43 @@ Public Class TreeViewDraggableNodes2Levels
         newNode.Tag = path
         newNode.Checked = nodeChecked
 
+        'add a new category
+        AddCategory(category)
+
         Dim node As TreeNode
         For Each node In MyBase.Nodes
             If node.Text = category Then
                 node.Nodes.Add(newNode)
+                Return True
             End If
         Next
 
-
-        Return True
+        Return False
 
 
     End Function
 
 
 
+    Public Sub populateTreeFromCollection(ByRef categorisedItemList As Collection, Optional ByVal checked As Boolean = False)
 
+        MyBase.PathSeparator = "#"
+        MyBase.Nodes.Clear()
 
+        'copy each item from listbox
+        Dim found As Boolean = False
+        Dim patch As String = Nothing
+        For Each categorisedItem As String In categorisedItemList
 
+            Dim category As String = categorisedItem.Split(MyBase.PathSeparator)(0)
+            Dim item As String = categorisedItem.Split(MyBase.PathSeparator)(1)
 
+            'find or create each node for item
+            found = AddFileToCategory(category, item, item, checked)
 
+        Next
 
-
-
-
-
-
-
-
-
+    End Sub
 
 
 End Class

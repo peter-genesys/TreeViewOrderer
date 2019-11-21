@@ -23,3 +23,12 @@ E:\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNode
 E:\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNodes2Levels.dll
 E:\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNodes2Levels.xml
 E:\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNodes2Levels.pdb
+C:\GitRepos\TreeViewOrderer\TreeViewDraggableNodes2Levels\bin\Debug\TreeViewDraggableNodes2Levels.dll
+C:\GitRepos\TreeViewOrderer\TreeViewDraggableNodes2Levels\bin\Debug\TreeViewDraggableNodes2Levels.pdb
+C:\GitRepos\TreeViewOrderer\TreeViewDraggableNodes2Levels\bin\Debug\TreeViewDraggableNodes2Levels.xml
+C:\GitRepos\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNodes2Levels.vbprojAssemblyReference.cache
+C:\GitRepos\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNodes2Levels.Resources.resources
+C:\GitRepos\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNodes2Levels.vbproj.GenerateResource.cache
+C:\GitRepos\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNodes2Levels.dll
+C:\GitRepos\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNodes2Levels.xml
+C:\GitRepos\TreeViewOrderer\TreeViewDraggableNodes2Levels\obj\Debug\TreeViewDraggableNodes2Levels.pdb
