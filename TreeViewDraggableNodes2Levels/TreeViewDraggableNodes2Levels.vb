@@ -36,7 +36,7 @@ Public Class TreeViewDraggableNodes2Levels
         'MyBase.InitializeComponent()
     End Sub
 
-    <Browsable(False), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+    <Browsable(False), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Shadows ReadOnly Property DrawMode() As System.Windows.Forms.TreeViewDrawMode
         Get
             Return MyBase.DrawMode
@@ -44,7 +44,7 @@ Public Class TreeViewDraggableNodes2Levels
     End Property
 
     '<DefaultValue(True)> _
-    <Browsable(False), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)> _
+    <Browsable(False), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Shadows ReadOnly Property AllowDrop() As Boolean
         Get
             Return MyBase.AllowDrop
@@ -162,20 +162,20 @@ Public Class TreeViewDraggableNodes2Levels
                         OnNodeMovedByDrag(New NodeMovedByDragEventArgs(dragNode, prevParent))
                         MyBase.SelectedNode = dragNode
                     End If
-  
-
-                End If
 
 
                 End If
+
 
             End If
+
+        End If
 
 
         MyBase.OnDragDrop(drgevent)
     End Sub
 
- 
+
 
     Private Function IsNodeDescendant(ByVal node As TreeNode, ByVal potentialElder As TreeNode) As Boolean
         Dim n As TreeNode
@@ -317,14 +317,20 @@ Public Class TreeViewDraggableNodes2Levels
 
 
     'A Category is a root node, with formatting
-    Public Function AddCategory(ByVal category As String) As Boolean
+    Public Function AddCategory(ByVal category As String, Optional ByVal theColor As String = "Aqua", Optional nodeChecked As Boolean = False) As Boolean
         If CategoryExists(category) Then
             Return True
         End If
- 
+
         Dim newNode As TreeNode = New TreeNode(category)
         newNode.Tag = category
-        newNode.BackColor = Color.Aqua
+        newNode.Checked = nodeChecked
+        Try
+            newNode.BackColor = Color.FromName(theColor) 'Color.Aqua
+        Catch ex As Exception
+            newNode.BackColor = Color.Aqua
+        End Try
+
 
         MyBase.Nodes.Add(newNode)
 
@@ -333,7 +339,7 @@ Public Class TreeViewDraggableNodes2Levels
     End Function
 
     'A Category is a root node, with formatting
-    Public Function PrependCategory(ByVal category As String) As Boolean
+    Public Function PrependCategory(ByVal category As String, Optional ByVal theColor As String = "Aqua", Optional nodeChecked As Boolean = False) As Boolean
 
         If CategoryExists(category) Then
             Return True
@@ -342,7 +348,12 @@ Public Class TreeViewDraggableNodes2Levels
 
         Dim newNode As TreeNode = New TreeNode(category)
         newNode.Tag = category
-        newNode.BackColor = Color.Aqua
+        newNode.Checked = nodeChecked
+        Try
+            newNode.BackColor = Color.FromName(theColor) 'Color.Aqua
+        Catch ex As Exception
+            newNode.BackColor = Color.Aqua
+        End Try
         MyBase.Nodes.Insert(0, newNode) 'Add node at start of nodes list.
 
         Return True
@@ -373,15 +384,39 @@ Public Class TreeViewDraggableNodes2Levels
     End Function
 
 
-
-    Public Sub populateTreeFromCollection(ByRef categorisedItemList As Collection, Optional ByVal checked As Boolean = False)
+    Public Sub populateTreeCategories(ByRef categoryList As Collection, Optional ByVal checked As Boolean = False, Optional ByVal emptyTree As Boolean = True)
 
         MyBase.PathSeparator = "#"
-        MyBase.Nodes.Clear()
+        If emptyTree Then
+            Me.EmptyTree()
+        End If
 
         'copy each item from listbox
+        For Each listItem As String In categoryList
+
+            Dim category As String = listItem.Split(MyBase.PathSeparator)(0)
+            Dim theColor As String
+            Try
+                theColor = listItem.Split(MyBase.PathSeparator)(1)
+            Catch ex As Exception
+                theColor = "Aqua"
+            End Try
+            'find or create each node for item
+            AddCategory(category, theColor, checked)
+
+        Next
+
+    End Sub
+
+    Public Sub PopulateTreeFromCollection(ByRef categorisedItemList As Collection, Optional ByVal checked As Boolean = False, Optional ByVal emptyTree As Boolean = True)
+
+        MyBase.PathSeparator = "#"
+        If emptyTree Then
+            Me.EmptyTree()
+        End If
+        'copy each item from listbox
         Dim found As Boolean = False
-        Dim patch As String = Nothing
+        'Dim patch As String = Nothing
         For Each categorisedItem As String In categorisedItemList
 
             Dim category As String = categorisedItem.Split(MyBase.PathSeparator)(0)
@@ -394,8 +429,15 @@ Public Class TreeViewDraggableNodes2Levels
 
     End Sub
 
+    Public Sub EmptyTree()
+        MyBase.Nodes.Clear()
+    End Sub
 
 End Class
+
+
+
+
 
 Public Class NodeDraggingOverEventArgs
     Inherits EventArgs
