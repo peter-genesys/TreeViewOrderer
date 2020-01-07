@@ -314,6 +314,27 @@ Public Class TreeViewDraggableNodes2Levels
     End Function
 
 
+    Public Sub expandCategory(ByVal category As String)
+        Dim node As TreeNode
+        For Each node In MyBase.Nodes
+            If node.Text = category Then
+                node.Expand()
+                Exit For
+            End If
+        Next
+
+    End Sub
+
+    Public Sub collapseCategory(ByVal category As String)
+        Dim node As TreeNode
+        For Each node In MyBase.Nodes
+            If node.Text = category Then
+                node.Collapse()
+                Exit For
+            End If
+        Next
+
+    End Sub
 
 
     'A Category is a root node, with formatting
