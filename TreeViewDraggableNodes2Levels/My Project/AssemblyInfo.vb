@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("TreeViewDraggableNodes2Levels")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Microsoft")> 
-<Assembly: AssemblyProduct("TreeViewDraggableNodes2Levels")> 
-<Assembly: AssemblyCopyright("Copyright © Microsoft 2013")> 
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("Killer Apps")>
+<Assembly: AssemblyProduct("TreeViewDraggableNodes2Levels")>
+<Assembly: AssemblyCopyright("Copyright © Peter Burgess")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
