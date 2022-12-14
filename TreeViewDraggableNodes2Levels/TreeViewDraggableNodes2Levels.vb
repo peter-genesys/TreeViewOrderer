@@ -302,6 +302,46 @@ Public Class TreeViewDraggableNodes2Levels
         ReadTags(MyBase.Nodes, iChosenPatches, listAllRoots, listNoRoots, listTags, checkedItemsOnly, listFullPath, rootNode)
 
     End Sub
+
+
+    Public Sub RemoveItem(ByVal item As String,
+                  Optional ByVal matchText As Boolean = False,
+                  Optional ByVal matchTag As Boolean = False)
+        'This routine assumes usage of a 2level control like TreeViewDraggableNodes2Levels
+
+        Dim removedItem As Boolean = False
+        For Each categoryNode As TreeNode In MyBase.Nodes 'level 1
+            If Not removedItem Then
+                For i As Integer = categoryNode.Nodes.Count - 1 To 0 Step -1 'level 2
+
+                    If (matchText AndAlso categoryNode.Nodes(i).Text = item) Or
+                       (matchTag AndAlso categoryNode.Nodes(i).Tag = item) Then
+                        categoryNode.Nodes.RemoveAt(i)
+                        removedItem = True
+                        Exit For 'assume there is a unique list, so finish searching once we have it.
+                    End If
+
+                Next i
+            End If
+
+        Next categoryNode
+
+    End Sub
+
+    Public Sub RemoveItems(ByRef items As Collection,
+                  Optional ByVal matchText As Boolean = False,
+                  Optional ByVal matchTag As Boolean = False)
+        'This routine assumes usage of a 2level control like TreeViewDraggableNodes2Levels
+
+        For Each item As String In items
+            RemoveItem(item:=item,
+                       matchText:=matchText,
+                       matchTag:=matchTag)
+        Next item
+
+    End Sub
+
+
     Public Function CategoryExists(ByVal category As String) As Boolean
         Dim node As TreeNode
         For Each node In MyBase.Nodes
